@@ -1,0 +1,19 @@
+{
+  "name": "foodie-farmer-server",
+  "version": "1.0.0",
+  "description": "The Node.js server code for the Foodie Farmer app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/hejjnt/foodie-farmer-server.git"
+  },
+  "author": "HEJJNT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/hejjnt/foodie-farmer-server/issues"
+  },
+  "homepage": "https://gitlab.com/hejjnt/foodie-farmer-server#readme"
+}
