@@ -32,6 +32,8 @@ router.post('/signin', (req, res) => {
     let email = payload.email
     let picture = payload.picture
     
+    if (!payload.email_verified) return res.send('Please verify your email')
+    
     let session = uuidv4()
     sessions[session] = email
     res.cookie('session', session, {maxAge: 1000 * 60 * 60 * 24 * 365, httpOnly: true, sameSite: 'Strict'})
@@ -39,7 +41,7 @@ router.post('/signin', (req, res) => {
   }
   verify().catch((err) => {
     console.error(err)
-    res.send(JSON.stringify(err))
+    res.send(err.toString())
   })
 })
 
