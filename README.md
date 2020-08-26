@@ -1,6 +1,16 @@
-# Foodie Farmer Server
+# Foodie Farmer API Server
 
-The Node.js server code for the Foodie Farmer app
+The Node.js api server code for the Foodie Farmer app
+
+## Running the api server
+
+Firstly install the required packages with
+
+  npm install
+
+Then run the server with
+
+  node .
 
 ## API
 
