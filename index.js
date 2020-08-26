@@ -8,13 +8,17 @@ const app = express()
 
 // Third party parsers
 app.use(express.urlencoded({extended: true}))
-app.use(cookieParser());
-app.use(expressFormData.parse());
+app.use(cookieParser())
+app.use(expressFormData.parse())
 
 // foodie-farmer routers
 const login = require('./login/login')
+const customer = require('./customer/customer')
+const farmer = require('./farmer/farmer')
 
-app.use(login);
+app.use(login)
+app.use('/customer', customer)
+app.use('/farmer', farmer)
 
 app.listen(PORT, () => {
   console.log(`foodie-farmer-server listening on http://localhost:${PORT}`)

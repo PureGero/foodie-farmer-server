@@ -25,3 +25,11 @@ Sign into the server with the specified google account
 ### GET /signout
 
 Sign out of any logged in accounts
+
+### GET /customer/test
+
+Test function
+
+### GET /farmer/test
+
+Test function
