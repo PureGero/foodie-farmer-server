@@ -3,10 +3,10 @@ const express = require('express')
 const expressFormData = require('express-form-data')
 
 var Sequelize = require('sequelize')
-  , sequelize = new Sequelize('FoodieFarmer', 'root', 'hejjnt', {
+  , sequelize = new Sequelize('FoodieFarmer', 'hejjnt', 'hejjnt', {
       dialect: "mysql",
-      host: "localhost",
-      port:    3306,
+      host:     "localhost",
+      port:     3306,
     });
 
 sequelize
