@@ -1,4 +1,4 @@
-var Sequelize = require('sequelize')
+var { Sequelize, DataTypes } = require('sequelize')
 , sequelize = new Sequelize('FoodieFarmer', 'hejjnt', 'hejjnt', {
     dialect: "mysql",
     host:     "localhost",
