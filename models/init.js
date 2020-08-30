@@ -14,7 +14,7 @@ sequelize
 });
 
 // Model for customer
-const Customer = sequelize.define('Customer', {
+const Customers = sequelize.define('Customers', {
   // Model attributes are defined here
   userName: {
     type: DataTypes.STRING,
@@ -41,4 +41,6 @@ const Customer = sequelize.define('Customer', {
 });
 
 // `sequelize.define` also returns the model
-console.log(Customer === sequelize.models.Customer); // true
+console.log(Customers === sequelize.models.Customers); // true
+await Customers.sync({ force: true });
+console.log("The table for the Customers model was just (re)created!");
