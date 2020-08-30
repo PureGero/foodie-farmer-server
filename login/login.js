@@ -1,5 +1,6 @@
 const express = require('express')
 const {OAuth2Client} = require('google-auth-library')
+const db = require('../models/database')
 
 const CLIENT_ID = '1077433649025-slog3d5l02cd9bd6av58agmgc2aspr79.apps.googleusercontent.com'
 
@@ -31,6 +32,9 @@ router.post('/signin', (req, res) => {
     let name = payload.name
     let email = payload.email
     let picture = payload.picture
+
+    // Populating database
+    const user = db.Customers.build({ userName: email, name: name})
     
     if (!payload.email_verified) return res.send('Please verify your email')
     

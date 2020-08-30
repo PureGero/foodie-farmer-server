@@ -13,6 +13,9 @@ sequelize
   console.log('Unable to connect to the database:', err);
 });
 
+db = {}
+db.Sequelize = Sequelize
+
 // Model for customer
 const Customers = sequelize.define('Customers', {
   // Model attributes are defined here
@@ -45,3 +48,5 @@ const Customers = sequelize.define('Customers', {
 console.log(Customers === sequelize.models.Customers); // true
 Customers.sync({ force: true });
 console.log("The table for the Customers model was just (re)created!");
+
+module.exports = db
