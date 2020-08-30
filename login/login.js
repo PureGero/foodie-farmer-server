@@ -34,7 +34,7 @@ router.post('/signin', (req, res) => {
     let picture = payload.picture
 
     // Populating database
-    const user = db.Customers.build({ userName: email, name: name})
+    const user = db.Customers.create({ userName: email, name: name})
     console.log(user.toJSON());
     
     if (!payload.email_verified) return res.send('Please verify your email')
