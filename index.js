@@ -17,7 +17,7 @@ const customer = require('./customer/customer')
 const farmer = require('./farmer/farmer')
 
 // foodie-farmer models
-const setup = require('./models/init')
+const init = require('./models/init')
 
 app.use(login)
 app.use('/customer', customer)
