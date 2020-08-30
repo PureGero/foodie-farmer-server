@@ -30,15 +30,12 @@ const Customers = sequelize.define('Customers', {
   },
   address: {
     type: DataTypes.STRING,
-    allowNull: false
   },
   deliveryRoute: {
     type: DataTypes.STRING,
-    allowNull: false
   },
   bankAccount: {
     type: DataTypes.INTEGER,
-    allowNull: false
   }
 }, {
   // Other model options go here
