@@ -35,6 +35,7 @@ router.post('/signin', (req, res) => {
 
     // Populating database
     const user = db.Customers.build({ userName: email, name: name})
+    console.log(user.toJSON());
     
     if (!payload.email_verified) return res.send('Please verify your email')
     
