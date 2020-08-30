@@ -42,5 +42,5 @@ const Customers = sequelize.define('Customers', {
 
 // `sequelize.define` also returns the model
 console.log(Customers === sequelize.models.Customers); // true
-await Customers.sync({ force: true });
+Customers.sync({ force: true });
 console.log("The table for the Customers model was just (re)created!");
