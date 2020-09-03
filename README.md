@@ -26,9 +26,11 @@ Sign into the server with the specified google account
 
 Sign out of any logged in accounts
 
-### GET /customer/test
+### GET /customer/edit_bankaccount
 
-Test function
+Edit the customer's bank account
+
+`bankAccount` New bank account value
 
 ### GET /farmer/add_product
 

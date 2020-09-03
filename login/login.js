@@ -36,7 +36,16 @@ router.post('/signin', (req, res) => {
     if (!payload.email_verified) return res.send('Please verify your email')
 
     // Populating database
-    const user = await db.Customers.create({ userName: email, name: name})
+    let existingCustomers = await db.Customers.findAll({
+      where: {
+        userName: email
+      }
+    })
+
+    if (!existingCustomers.length) {
+      // Customer doesn't already exist
+      const user = await db.Customers.create({ userName: email, name: name })
+    }
     
     let session = uuidv4()
     sessions[session] = email
@@ -54,7 +63,7 @@ router.get('/signout', (req, res) => {
   if (!req.cookies.session) return res.send('Not signed in')
   
   delete sessions[req.cookies.session]
-  res.clearCookie('session');
+  res.clearCookie('session')
   res.send('Signed out')
 })
 
