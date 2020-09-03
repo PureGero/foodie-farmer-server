@@ -41,10 +41,33 @@ const Customers = sequelize.define('Customers', {
   // Other model options go here
 });
 
-// `sequelize.define` also returns the model
-console.log(Customers === sequelize.models.Customers); // true
-Customers.sync({ force: true });
-console.log("The table for the Customers model was just (re)created!");
+const BankAccounts = sequelize.define('BankAccounts', {
+  accountNumber: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false
+  },
+  BSB: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  accountName: {
+    type: DataTypes.STRING,
+    allowNull: false
+  } 
+})
+
+Customers.hasMany(BankAccounts, {
+  foreignKey: {
+    name: 'uid',
+    allowNull: false
+  }
+})
+
+Customers.sync({ alter: true });
+BankAccounts.sync({ alter: true})
+
 db.Customers = Customers;
+db.BankAccounts = BankAccounts;
 
 module.exports = db;
