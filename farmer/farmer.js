@@ -27,8 +27,6 @@ router.get('/add_product', (req, res) => {
 
   if (isNaN(expirationDate.getTime())) return res.send('Invalid expiration date')
 
-  if (!req.email) return res.send('You are not logged in')
-
   // TODO Add the product to the database
 
   res.send('Product successfully added')
