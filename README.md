@@ -30,6 +30,11 @@ Sign out of any logged in accounts
 
 Test function
 
-### GET /farmer/test
+### GET /farmer/add_product
 
-Test function
+Add a product to the farmer's store
+
+`name` Name of the product
+`type` Type of the product
+`quantity` The amount of stock available 
+`expirationDate` When the product will expire
