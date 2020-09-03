@@ -33,13 +33,10 @@ router.post('/signin', (req, res) => {
     let email = payload.email
     let picture = payload.picture
 
+    if (!payload.email_verified) return res.send('Please verify your email')
+
     // Populating database
     const user = await db.Customers.create({ userName: email, name: name})
-    console.log(user instanceof Customers);
-    console.log(user.userName);
-
-    
-    if (!payload.email_verified) return res.send('Please verify your email')
     
     let session = uuidv4()
     sessions[session] = email
