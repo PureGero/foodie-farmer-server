@@ -28,6 +28,9 @@ const Customers = sequelize.define('Customers', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  picture: {
+    type: DataTypes.STRING,
+  },
   address: {
     type: DataTypes.STRING,
   },

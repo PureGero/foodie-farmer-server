@@ -44,7 +44,7 @@ router.post('/signin', (req, res) => {
 
     if (!existingCustomers.length) {
       // Customer doesn't already exist
-      const user = await db.Customers.create({ userName: email, name: name })
+      const user = await db.Customers.create({ userName: email, name: name, picture: picture })
     }
     
     let session = uuidv4()
