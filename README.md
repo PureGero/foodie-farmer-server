@@ -26,7 +26,11 @@ Sign into the server with the specified google account
 
 Sign out of any logged in accounts
 
-### GET /customer/edit_bankaccount
+### GET /customer/get_profile
+
+Get the customer's profile details
+
+### POST /customer/edit_bankaccount
 
 Edit the customer's bank account
 

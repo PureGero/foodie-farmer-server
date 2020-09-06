@@ -10,6 +10,28 @@ router.use((req, res, next) => {
   next()
 })
 
+// Get the customer's profile details
+router.get('/get_profile', async (req, res) => {
+  // Get the Customer from the database
+  let customers = await db.Customers.findAll({
+    where: {
+      userName: req.email
+    }
+  })
+
+  if (!customers.length) return res.send('Could not find profile')
+
+  let customer = customers[0]
+
+  res.send({
+    userName: customer.userName,
+    name: customer.name,
+    picture: customer.picture,
+    address: customer.address,
+    bankAccount: customer.bankAccount
+  })
+})
+
 // Edit the customer's bank account
 router.post('/edit_bankaccount', async (req, res) => {
   let bankAccount = req.body.bankAccount
