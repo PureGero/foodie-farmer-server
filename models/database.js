@@ -142,8 +142,6 @@ const OrderItem = sequelize.define('OrderItem', {
   }
 })
 
-const Poo = sequelize.define('Poo')
-
 // Database Associations
 Producers.belongsTo(Farm)
 Producers.belongsTo(BankAccounts)
@@ -154,7 +152,7 @@ OrderItem.belongsTo(Stock)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
 
-sequelize.sync({ force: true })
+sequelize.sync({ alter: true })
 
 db.Customers = Customers
 db.BankAccounts = BankAccounts
