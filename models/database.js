@@ -92,10 +92,7 @@ Producers.belongsTo(Farm)
 Producers.belongsTo(BankAccounts)
 Customers.belongsTo(BankAccounts)
 
-Customers.sync({ alter: true })
-BankAccounts.sync({ alter: true})
-Farm.sync({ alter: true})
-Producers.sync({ alter: true})
+sequelize.sync({force: true})
 
 
 db.Customers = Customers
