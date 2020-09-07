@@ -60,8 +60,6 @@ const BankAccounts = sequelize.define('BankAccounts', {
   } 
 })
 
-BankAccounts.belongsTo(Customers)
-
 const Farm = sequelize.define('Farm', {
   farmID: {
     type: DataTypes.INTEGER,
@@ -97,11 +95,12 @@ const Producers = sequelize.define('Producers', {
 
 Farm.belongsTo(Producers)
 BankAccounts.belongsTo(Producers)
+BankAccounts.belongsTo(Customers)
 
-Customers.sync({ force: true })
-BankAccounts.sync({ force: true})
-Farm.sync({force: true})
-Producers.sync({force: true})
+Customers.sync({ alter: true })
+BankAccounts.sync({ alter: true})
+Farm.sync({ alter: true})
+Producers.sync({ alter: true})
 
 
 db.Customers = Customers
