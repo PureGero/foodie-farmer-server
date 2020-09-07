@@ -169,7 +169,7 @@ Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
 Farm.hasOne(Route, {as: 'Start'})
 Customers.hasMany(Route)
-Route.hasMany(Driver)
+Driver.hasMany(Route)
 
 sequelize.sync({ alter: true })
 
