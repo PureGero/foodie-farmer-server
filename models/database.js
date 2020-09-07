@@ -132,7 +132,6 @@ Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
 
-Stock.sync({ force: true })
 sequelize.sync({ force: true })
 
 
