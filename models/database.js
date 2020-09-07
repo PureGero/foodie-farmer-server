@@ -167,9 +167,9 @@ Stock.belongsTo(Farm)
 OrderItem.belongsTo(Stock)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
-Route.hasOne(Farm, {as: 'Start'})
-Route.hasMany(Customers)
-Driver.hasMany(Route)
+Farm.hasOne(Route, {as: 'Start'})
+Customers.hasMany(Route)
+Route.hasMany(Driver)
 
 sequelize.sync({ alter: true })
 
