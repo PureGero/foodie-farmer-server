@@ -120,6 +120,14 @@ const Stock = sequelize.define('Stock', {
   name: {
     type: DataTypes.STRING
   }
+}, {
+  freezeTableName: true
+})
+
+const Cart = sequelize.define('Cart', {
+  id: {
+    type: DataTypes.INTEGER
+  }
 })
 
 // Database Associations
@@ -129,7 +137,7 @@ Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
 
-sequelize.sync({force: true})
+sequelize.sync({alter: true})
 
 
 db.Customers = Customers
