@@ -142,6 +142,8 @@ const OrderItem = sequelize.define('OrderItem', {
   }
 })
 
+const Poo = sequelize.define('Poo')
+
 // Database Associations
 Producers.belongsTo(Farm)
 Producers.belongsTo(BankAccounts)
