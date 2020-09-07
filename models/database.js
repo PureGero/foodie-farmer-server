@@ -149,7 +149,7 @@ Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
-OrderItem.hasOne(Stock)
+OrderItem.belongsTo(Stock)
 
 sequelize.sync({ alter: true })
 
