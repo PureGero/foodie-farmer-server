@@ -5,7 +5,7 @@ const router = express.Router()
 
 // Ensure customers are signed in
 router.use((req, res, next) => {
-  if (!req.email) return res.send('You are not logged in')
+  if (!req.email) return res.status(400).send('You are not logged in')
 
   next()
 })
@@ -19,7 +19,7 @@ router.get('/get_profile', async (req, res) => {
     }
   })
 
-  if (!customers.length) return res.send('Could not find profile')
+  if (!customers.length) return res.status(400).send('Could not find profile')
 
   let customer = customers[0]
 
@@ -36,11 +36,11 @@ router.get('/get_profile', async (req, res) => {
 router.post('/edit_bankaccount', async (req, res) => {
   let bankAccount = req.body.bankAccount
 
-  if (!bankAccount) return res.send('Missing paramteres')
+  if (!bankAccount) return res.status(400).send('Missing paramteres')
 
   bankAccount = parseInt(bankAccount)
 
-  if (isNaN(bankAccount)) return res.send('Bank account must be a number')
+  if (isNaN(bankAccount)) return res.status(400).send('Bank account must be a number')
 
   // Edit bank account in database
   await db.Customers.update({ bankAccount: bankAccount }, {

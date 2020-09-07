@@ -20,7 +20,7 @@ router.use((req, res, next) => {
 router.post('/signin', (req, res) => {
   let idtoken = req.body.idtoken
   
-  if (!idtoken) return res.send('Please specify an idtoken')
+  if (!idtoken) return res.status(400).send('Please specify an idtoken')
   
   async function verify() {
     const ticket = await client.verifyIdToken({
@@ -33,7 +33,7 @@ router.post('/signin', (req, res) => {
     let email = payload.email
     let picture = payload.picture
 
-    if (!payload.email_verified) return res.send('Please verify your email')
+    if (!payload.email_verified) return res.status(400).send('Please verify your email')
 
     // Populating database
     let existingCustomers = await db.Customers.findAll({
@@ -54,13 +54,13 @@ router.post('/signin', (req, res) => {
   }
   verify().catch((err) => {
     console.error(err)
-    res.send(err.toString())
+    res.status(500).send(err.toString())
   })
 })
 
 // Sign out of any logged in accounts
 router.get('/signout', (req, res) => {
-  if (!req.cookies.session) return res.send('Not signed in')
+  if (!req.cookies.session) return res.status(400).send('Not signed in')
   
   delete sessions[req.cookies.session]
   res.clearCookie('session')
