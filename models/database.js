@@ -125,12 +125,6 @@ const Stock = sequelize.define('Stock', {
   tableName: "Stock"
 })
 
-const Cart = sequelize.define('Cart', {
-  id: {
-    type: DataTypes.INTEGER
-  }
-})
-
 // Database Associations
 Producers.belongsTo(Farm)
 Producers.belongsTo(BankAccounts)
