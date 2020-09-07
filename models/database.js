@@ -121,6 +121,7 @@ const Stock = sequelize.define('Stock', {
     type: DataTypes.STRING
   }
 }, {
+  freezeTableName: true,
   tableName: "Stock"
 })
 
@@ -137,7 +138,7 @@ Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
 
-sequelize.sync({alter: true})
+sequelize.sync({ force: true })
 
 
 db.Customers = Customers
