@@ -93,9 +93,9 @@ const Producers = sequelize.define('Producers', {
   }
 })
 
-Farm.belongsTo(Producers)
-BankAccounts.belongsTo(Producers)
-BankAccounts.belongsTo(Customers)
+Producers.belongsTo(Farm)
+Producers.belongsTo(BankAccounts)
+Customers.belongsTo(BankAccounts)
 
 Customers.sync({ alter: true })
 BankAccounts.sync({ alter: true})
