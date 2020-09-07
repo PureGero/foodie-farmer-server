@@ -37,8 +37,9 @@ const Customers = sequelize.define('Customers', {
   deliveryRoute: {
     type: DataTypes.STRING,
   }
-});
+})
 
+// Model for BankAccounts
 const BankAccounts = sequelize.define('BankAccounts', {
   number: {
     type: DataTypes.INTEGER,
@@ -147,10 +148,9 @@ Producers.belongsTo(BankAccounts)
 Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
-OrderItem.hasOne(Stock)
+OrderItem.belongsTo(Stock)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
-
 
 sequelize.sync({ alter: true })
 
