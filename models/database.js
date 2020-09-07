@@ -40,7 +40,7 @@ const Customers = sequelize.define('Customers', {
 });
 
 const BankAccounts = sequelize.define('BankAccounts', {
-  accountNumber: {
+  number: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false
@@ -49,7 +49,7 @@ const BankAccounts = sequelize.define('BankAccounts', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  accountName: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false
   } 
@@ -88,9 +88,9 @@ const Producers = sequelize.define('Producers', {
   }
 })
 
-Producers.belongsTo(Farm, {as: 'farmID'})
-Producers.belongsTo(BankAccounts, {as: 'bankAccountNumber'})
-Customers.belongsTo(BankAccounts, {as: 'bankAccountNumber'})
+Producers.belongsTo(Farm)
+Producers.belongsTo(BankAccounts)
+Customers.belongsTo(BankAccounts)
 
 Customers.sync({ alter: true })
 BankAccounts.sync({ alter: true})
