@@ -114,10 +114,10 @@ Producers.hasMany(BankAccounts, {
   }
 })
 
-Customers.sync({ alter: true })
-BankAccounts.sync({ alter: true})
-Farm.sync({alter: true})
-Producers.sync({alter: true})
+Customers.sync({ force: true })
+BankAccounts.sync({ force: true})
+Farm.sync({force: true})
+Producers.sync({force: true})
 
 
 db.Customers = Customers;
