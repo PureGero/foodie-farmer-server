@@ -133,7 +133,7 @@ const Order = sequelize.define('Order',  {
   }
 })
 
-const OrderItem = sequelize.define('OrderItem' {
+const OrderItem = sequelize.define('OrderItem', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -147,9 +147,9 @@ Producers.belongsTo(BankAccounts)
 Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
+OrderItem.hasOne(Stock)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
-OrderItem.hasMany(Stock)
 
 
 sequelize.sync({ alter: true })
