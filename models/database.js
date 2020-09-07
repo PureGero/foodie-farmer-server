@@ -120,6 +120,25 @@ const Stock = sequelize.define('Stock', {
   name: {
     type: DataTypes.STRING
   }
+}, {
+  freezeTableName: true,
+  tableName: "Stock"
+})
+
+const Order = sequelize.define('Order',  {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false
+  }
+})
+
+const OrderItem = sequelize.define('OrderItem', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false
+  }
 })
 
 // Database Associations
@@ -128,9 +147,12 @@ Producers.belongsTo(BankAccounts)
 Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
+OrderItem.hasOne(Stock)
+Order.belongsTo(Customers)
+Order.hasMany(OrderItem)
 
-sequelize.sync({ force: true })
 
+sequelize.sync({ alter: true })
 
 db.Customers = Customers
 db.BankAccounts = BankAccounts
@@ -138,5 +160,7 @@ db.farm = Farm
 db.Producers = Producers
 db.StockType = StockType
 db.Stock = Stock
+db.Order = Order
+db.OrderItem = OrderItem
 
 module.exports = db
