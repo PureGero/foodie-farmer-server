@@ -1,4 +1,4 @@
-var { Sequelize, DataTypes } = require('sequelize')
+var { Sequelize, DataTypes, DATEONLY } = require('sequelize')
 , sequelize = new Sequelize('FoodieFarmer', 'hejjnt', 'hejjnt', {
     dialect: "mysql",
     host:     "localhost",
@@ -56,7 +56,7 @@ const BankAccounts = sequelize.define('BankAccounts', {
 })
 
 const Farm = sequelize.define('Farm', {
-  farmID: {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     allowNull: false
@@ -88,9 +88,46 @@ const Producers = sequelize.define('Producers', {
   }
 })
 
+const StockType = sequelize.define('StockType', {
+  name: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  minPrice: {
+    type: DataTypes.INTEGER,
+  },
+  maxPrice: {
+    type: DataTypes.INTEGER,
+  },
+  count: {
+    type: DataTypes.INTEGER
+  }
+})
+
+const Stock = sequelize.define('Stock', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false
+  },
+  expirationDate: {
+    type: DataTypes.DATE
+  },
+  quantity: {
+    type: DataTypes.INTEGER
+  },
+  name: {
+    type: DataTypes.STRING
+  }
+})
+
+// Database Associations
 Producers.belongsTo(Farm)
 Producers.belongsTo(BankAccounts)
 Customers.belongsTo(BankAccounts)
+Stock.belongsTo(StockType)
+Stock.belongsTo(Farm)
 
 sequelize.sync({force: true})
 
