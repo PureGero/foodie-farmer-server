@@ -36,12 +36,7 @@ const Customers = sequelize.define('Customers', {
   },
   deliveryRoute: {
     type: DataTypes.STRING,
-  },
-  bankAccount: {
-    type: DataTypes.INTEGER,
   }
-}, {
-  // Other model options go here
 });
 
 const BankAccounts = sequelize.define('BankAccounts', {
