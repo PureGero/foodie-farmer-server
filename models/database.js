@@ -147,10 +147,9 @@ Producers.belongsTo(BankAccounts)
 Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
-Stock.hasOne(OrderItem)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
-
+OrderItem.hasOne(Stock)
 
 sequelize.sync({ alter: true })
 
