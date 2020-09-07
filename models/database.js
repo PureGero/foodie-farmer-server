@@ -67,8 +67,58 @@ Customers.hasMany(BankAccounts, {
   }
 })
 
-Customers.sync({ alter: true });
+const Farm = sequelize.define('Farm', {
+  farmID: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  // Maybe find an API to detect addresses and check they are real
+  address: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+})
+
+const Producers = sequelize.define('Producers', {
+  // Model attributes are defined here
+  userName: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  picture: {
+    type: DataTypes.STRING,
+  }
+})
+
+Producers.hasOne(Farm, {
+  foreignKey: {
+    name: 'farmID',
+    allowNull: false
+  }
+})
+
+Producers.hasMany(BankAccounts, {
+  foreignKey: {
+    name: 'uid',
+    allowNull: false
+  }
+})
+
+Customers.sync({ alter: true })
 BankAccounts.sync({ alter: true})
+Farm.sync({alter: true})
+Producers.sync({alter: true})
+
 
 db.Customers = Customers;
 db.BankAccounts = BankAccounts;
