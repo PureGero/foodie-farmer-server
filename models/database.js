@@ -121,7 +121,6 @@ const Stock = sequelize.define('Stock', {
     type: DataTypes.STRING
   }
 }, {
-  freezeTableName: true,
   tableName: "Stock"
 })
 
