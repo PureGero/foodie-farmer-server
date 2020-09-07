@@ -60,12 +60,7 @@ const BankAccounts = sequelize.define('BankAccounts', {
   } 
 })
 
-Customers.hasMany(BankAccounts, {
-  foreignKey: {
-    name: 'uid',
-    allowNull: false
-  }
-})
+BankAccounts.belongsTo(Customers)
 
 const Farm = sequelize.define('Farm', {
   farmID: {
@@ -100,19 +95,8 @@ const Producers = sequelize.define('Producers', {
   }
 })
 
-Producers.hasOne(Farm, {
-  foreignKey: {
-    name: 'farmID',
-    allowNull: false
-  }
-})
-
-Producers.hasMany(BankAccounts, {
-  foreignKey: {
-    name: 'uid',
-    allowNull: false
-  }
-})
+Farm.belongsTo(Producers)
+BankAccounts.belongsTo(Producers)
 
 Customers.sync({ force: true })
 BankAccounts.sync({ force: true})
@@ -120,7 +104,9 @@ Farm.sync({force: true})
 Producers.sync({force: true})
 
 
-db.Customers = Customers;
-db.BankAccounts = BankAccounts;
+db.Customers = Customers
+db.BankAccounts = BankAccounts
+db.farm = Farm
+db.Producers = Producers
 
-module.exports = db;
+module.exports = db
