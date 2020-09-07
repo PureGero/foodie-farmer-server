@@ -147,7 +147,7 @@ Producers.belongsTo(BankAccounts)
 Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
-OrderItem.hasOne(Stock)
+Stock.hasOne(OrderItem)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
 
