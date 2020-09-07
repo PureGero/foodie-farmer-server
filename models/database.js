@@ -121,7 +121,8 @@ const Stock = sequelize.define('Stock', {
     type: DataTypes.STRING
   }
 }, {
-  freezeTableName: true
+  freezeTableName: true,
+  tableName: "Stock"
 })
 
 const Cart = sequelize.define('Cart', {
