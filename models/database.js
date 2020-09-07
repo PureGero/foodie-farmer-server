@@ -145,5 +145,7 @@ db.Customers = Customers
 db.BankAccounts = BankAccounts
 db.farm = Farm
 db.Producers = Producers
+db.StockType = StockType
+db.Stock = Stock
 
 module.exports = db
