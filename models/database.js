@@ -154,7 +154,7 @@ OrderItem.belongsTo(Stock)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
 
-sequelize.sync({ alter: true })
+sequelize.sync({ force: true })
 
 db.Customers = Customers
 db.BankAccounts = BankAccounts
