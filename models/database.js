@@ -142,6 +142,22 @@ const OrderItem = sequelize.define('OrderItem', {
   }
 })
 
+const Route = sequelize.define('Route', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false
+  }
+})
+
+const Driver = sequelize.define('Driver', {
+  licenseNumber: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+    allowNull: false
+  }
+})
+
 // Database Associations
 Producers.belongsTo(Farm)
 Producers.belongsTo(BankAccounts)
@@ -151,6 +167,9 @@ Stock.belongsTo(Farm)
 OrderItem.belongsTo(Stock)
 Order.belongsTo(Customers)
 Order.hasMany(OrderItem)
+Farm.hasOne(Route, {as: 'Start'})
+Customers.hasMany(Route)
+Route.hasMany(Driver)
 
 sequelize.sync({ alter: true })
 
