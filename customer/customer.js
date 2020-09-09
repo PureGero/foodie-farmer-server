@@ -32,6 +32,21 @@ router.get('/get_profile', async (req, res) => {
   })
 })
 
+// Get the customer's recommended items
+router.get('/list_recommend', async (req, res) => {
+  // TODO Generate recommended from the database
+
+  res.send([
+    {
+      name: "Apple",
+      image: "https://i.imgur.com/YRwlA.jpg",
+      cost: 5.55,
+      farm: "Doug's Apple Farm",
+      location: "Thulimbah QLD"
+    }
+  ])
+})
+
 // Edit the customer's bank account
 router.post('/edit_bankaccount', async (req, res) => {
   let bankAccount = req.body.bankAccount

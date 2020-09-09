@@ -30,6 +30,10 @@ Sign out of any logged in accounts
 
 Get the customer's profile details
 
+### GET /customer/list_recommend
+
+Get the customer's recommended items
+
 ### POST /customer/edit_bankaccount
 
 Edit the customer's bank account
