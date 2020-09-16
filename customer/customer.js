@@ -32,6 +32,39 @@ router.get('/get_profile', async (req, res) => {
   })
 })
 
+// Get the items the customer could purchase matching a specified query
+// `query` Query to search for
+router.get('/search_items', async (req, res) => {
+  // TODO Generate items from the database
+  let query = req.body.query
+
+  if (!query) return res.status(400).send('Missing query')
+
+  // For testing purposes, sends an apple if an apple was searched for,
+  // otherwise sends an orange
+  if (query.toLowerCase().indexOf('apple')) {
+    res.send([
+      {
+        name: "Apple",
+        image: "https://i.imgur.com/YRwlA.jpg",
+        cost: 5.55,
+        farm: "Doug's Apple Farm",
+        location: "Thulimbah QLD"
+      }
+    ])
+  } else {
+    res.send([
+      {
+        name: "Orange",
+        image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
+        cost: 7.00,
+        farm: "Doug's Apple Farm",
+        location: "Thulimbah QLD"
+      }
+    ])
+  }
+})
+
 // Get the customer's recommended items
 router.get('/list_recommend', async (req, res) => {
   // TODO Generate recommended from the database

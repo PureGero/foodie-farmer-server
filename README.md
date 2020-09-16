@@ -30,6 +30,12 @@ Sign out of any logged in accounts
 
 Get the customer's profile details
 
+### GET /customer/search_items
+
+Get the items the customer could purchase matching a specified query
+
+`query` Query to search for
+
 ### GET /customer/list_recommend
 
 Get the customer's recommended items
