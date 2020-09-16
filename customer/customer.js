@@ -45,6 +45,7 @@ router.get('/search_items', async (req, res) => {
   if (~query.toLowerCase().indexOf('apple')) {
     res.send([
       {
+        id: 652,
         name: "Apple",
         image: "https://i.imgur.com/YRwlA.jpg",
         cost: 5.55,
@@ -55,6 +56,7 @@ router.get('/search_items', async (req, res) => {
   } else {
     res.send([
       {
+        id: 711,
         name: "Orange",
         image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
         cost: 7.00,
@@ -71,6 +73,7 @@ router.get('/list_recommend', async (req, res) => {
 
   res.send([
     {
+      id: 652,
       name: "Apple",
       image: "https://i.imgur.com/YRwlA.jpg",
       cost: 5.55,
@@ -86,6 +89,7 @@ router.get('/list_group_purchases', async (req, res) => {
 
   res.send([
     {
+      id: 398,
       name: "Apple",
       image: "https://i.imgur.com/YRwlA.jpg",
       cost: 4.02,
