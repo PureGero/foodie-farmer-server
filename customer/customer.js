@@ -101,11 +101,29 @@ router.get('/list_group_purchases', async (req, res) => {
   ])
 })
 
+// Edit the customer's address
+// `address` New address value
+router.post('/edit_address', async (req, res) => {
+  let address = req.body.address
+
+  if (!address) return res.status(400).send('Missing address')
+
+  // Edit bank account in database
+  await db.Customers.update({ address: address }, {
+    where: {
+      userName: req.email
+    }
+  })
+
+  res.send('Address successfully changed')
+})
+
 // Edit the customer's bank account
+// `bankAccount` New bank account value
 router.post('/edit_bankaccount', async (req, res) => {
   let bankAccount = req.body.bankAccount
 
-  if (!bankAccount) return res.status(400).send('Missing paramteres')
+  if (!bankAccount) return res.status(400).send('Missing bankAccount')
 
   bankAccount = parseInt(bankAccount)
 

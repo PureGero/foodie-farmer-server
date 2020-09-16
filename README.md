@@ -44,6 +44,12 @@ Get the customer's recommended items
 
 Get the group purchases that the customer can join in on
 
+### POST /customer/edit_address
+
+Edit the customer's address
+
+`address` New address value
+
 ### POST /customer/edit_bankaccount
 
 Edit the customer's bank account
@@ -54,7 +60,7 @@ Edit the customer's bank account
 
 Add a product to the farmer's store
 
-`name` Name of the product
-`type` Type of the product
-`quantity` The amount of stock available 
-`expirationDate` When the product will expire
+`name` Name of the product  
+`type` Type of the product  
+`quantity` The amount of stock available  
+`expirationDate` When the product will expire  
