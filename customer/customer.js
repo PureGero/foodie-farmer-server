@@ -42,7 +42,7 @@ router.get('/search_items', async (req, res) => {
 
   // For testing purposes, sends an apple if an apple was searched for,
   // otherwise sends an orange
-  if (query.toLowerCase().indexOf('apple')) {
+  if (~query.toLowerCase().indexOf('apple')) {
     res.send([
       {
         name: "Apple",
