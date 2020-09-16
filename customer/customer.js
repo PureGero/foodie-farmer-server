@@ -47,6 +47,23 @@ router.get('/list_recommend', async (req, res) => {
   ])
 })
 
+// Get the group purchases that the customer can join in on
+router.get('/list_group_purchases', async (req, res) => {
+  // TODO Generate group purchases from the database
+
+  res.send([
+    {
+      name: "Apple",
+      image: "https://i.imgur.com/YRwlA.jpg",
+      cost: 4.02,
+      originalCost: 5.55,
+      customerCount: 61,
+      farm: "Doug's Apple Farm",
+      location: "Thulimbah QLD"
+    }
+  ])
+})
+
 // Edit the customer's bank account
 router.post('/edit_bankaccount', async (req, res) => {
   let bankAccount = req.body.bankAccount
