@@ -60,8 +60,8 @@ router.get('/search_items', async (req, res) => {
         name: "Orange",
         image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
         cost: 7.00,
-        farm: "Doug's Apple Farm",
-        location: "Thulimbah QLD"
+        farm: "Geoff's Orange Farm",
+        location: "Mt Isa QLD"
       }
     ])
   }
@@ -79,6 +79,20 @@ router.get('/list_recommend', async (req, res) => {
       cost: 5.55,
       farm: "Doug's Apple Farm",
       location: "Thulimbah QLD"
+    }, {
+      id: 652,
+      name: "Apple",
+      image: "https://i.imgur.com/YRwlA.jpg",
+      cost: 5.55,
+      farm: "Doug's Apple Farm",
+      location: "Thulimbah QLD"
+    }, {
+      id: 711,
+      name: "Orange",
+      image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
+      cost: 7.00,
+      farm: "Geoff's Orange Farm",
+      location: "Mt Isa QLD"
     }
   ])
 })
@@ -97,6 +111,33 @@ router.get('/list_group_purchases', async (req, res) => {
       customerCount: 61,
       farm: "Doug's Apple Farm",
       location: "Thulimbah QLD"
+    }, {
+      id: 398,
+      name: "Apple",
+      image: "https://i.imgur.com/YRwlA.jpg",
+      cost: 4.66,
+      originalCost: 5.55,
+      customerCount: 45,
+      farm: "Doug's Apple Farm",
+      location: "Thulimbah QLD"
+    }, {
+      id: 398,
+      name: "Apple",
+      image: "https://i.imgur.com/YRwlA.jpg",
+      cost: 5.12,
+      originalCost: 5.55,
+      customerCount: 32,
+      farm: "Doug's Apple Farm",
+      location: "Thulimbah QLD"
+    }, {
+      id: 425,
+      name: "Orange",
+      image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
+      cost: 6.58,
+      originalCost: 7.00,
+      customerCount: 29,
+      farm: "Geoff's Orange Farm",
+      location: "Mt Isa QLD"
     }
   ])
 })
