@@ -6,11 +6,16 @@ The Node.js api server code for the Foodie Farmer app
 
 Firstly install the required packages with
 
-  npm install
+  `npm install`
 
 Then run the server with
 
-  node .
+  `node .`
+
+### MySQL Server
+
+The api relies on a mysql server to operate,  
+install a mysql server then set up a database and a user to match the fields in `models/database.js`
 
 ## API
 
