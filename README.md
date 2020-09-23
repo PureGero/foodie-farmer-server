@@ -10,7 +10,7 @@ Firstly install the required packages with
 
 Then run the server with
 
-  `node .`
+  `npm run start`
 
 ### MySQL Server
 

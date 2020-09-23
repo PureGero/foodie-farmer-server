@@ -4,6 +4,7 @@
   "description": "The Node.js server code for the Foodie Farmer app",
   "main": "index.js",
   "scripts": {
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
