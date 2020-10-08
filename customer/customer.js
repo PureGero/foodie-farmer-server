@@ -35,15 +35,15 @@ router.get('/get_profile', async (req, res) => {
 // Get the list of all produces
 router.get('/get_produce', async (req, res) => {
   // Get the Customer from the database
-  let produce = await db.Stock.findAll({
+  let produces = await db.Stock.findAll({
     where: {
       isSelling: true
     }
   })
 
-  if (!produce.length) return res.status(400).send('Could not find profile')
+  if (!produces.length) return res.status(400).send('Could not find profile')
 
-  let produce = produce[0]
+  let produce = produces[0]
 
   res.send({
     name: produce.name,
