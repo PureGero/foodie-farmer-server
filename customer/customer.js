@@ -43,14 +43,17 @@ router.get('/get_produce', async (req, res) => {
 
   if (!produces.length) return res.status(400).send('Could not find profile')
 
-  let produce = produces[0]
-
-  res.send({
-    name: produce.name,
-    picture: produce.picture,
-    description: produce.description,
-    price: produce.price
+  let result = [];
+  produces.forEach(produce => {
+    result.push({
+      name: produce.name,
+      picture: produce.picture,
+      description: produce.description,
+      price: produce.price
+    })
   })
+  res.send(result)
+
 })
 
 
