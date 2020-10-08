@@ -46,6 +46,7 @@ router.get('/get_produce', async (req, res) => {
   let result = [];
   produces.forEach(produce => {
     result.push({
+      id: produce.id,
       name: produce.name,
       picture: produce.picture,
       description: produce.description,
