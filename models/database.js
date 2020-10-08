@@ -50,6 +50,10 @@ const BankAccounts = sequelize.define('BankAccounts', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
+  accountNumber: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false
