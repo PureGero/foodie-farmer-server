@@ -120,6 +120,18 @@ const Stock = sequelize.define('Stock', {
   },
   name: {
     type: DataTypes.STRING
+  },
+  picture: {
+    type: DataTypes.STRING
+  },
+  description: {
+    type: DataTypes.STRING
+  },
+  price: {
+    type: DataTypes.INTEGER
+  },
+  isSelling: {
+    type: DataTypes.BOOLEAN
   }
 }, {
   freezeTableName: true,
