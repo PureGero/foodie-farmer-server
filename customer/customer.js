@@ -32,6 +32,28 @@ router.get('/get_profile', async (req, res) => {
   })
 })
 
+// Get the list of all produces
+router.get('/get_produce', async (req, res) => {
+  // Get the Customer from the database
+  let produce = await db.Stock.findAll({
+    where: {
+      isSelling: true
+    }
+  })
+
+  if (!produce.length) return res.status(400).send('Could not find profile')
+
+  let produce = produce[0]
+
+  res.send({
+    name: produce.name,
+    picture: produce.picture,
+    description: produce.description,
+    price: produce.price
+  })
+})
+
+
 // Get the items the customer could purchase matching a specified query
 // `query` Query to search for
 router.get('/search_items', async (req, res) => {
