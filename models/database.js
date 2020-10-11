@@ -44,7 +44,8 @@ const BankAccounts = sequelize.define('BankAccounts', {
   number: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
+    autoIncrement: true
   },
   BSB: {
     type: DataTypes.INTEGER,
@@ -64,7 +65,8 @@ const Farm = sequelize.define('Farm', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
+    autoIncrement: true
   },
   name: {
     type: DataTypes.STRING,
@@ -114,7 +116,8 @@ const Stock = sequelize.define('Stock', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
+    autoIncrement: true
   },
   expirationDate: {
     type: DataTypes.DATE
@@ -146,7 +149,8 @@ const Order = sequelize.define('Order',  {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
+    autoIncrement: true
   }
 })
 
@@ -154,7 +158,8 @@ const OrderItem = sequelize.define('OrderItem', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
+    autoIncrement: true
   }
 })
 
@@ -162,7 +167,8 @@ const Route = sequelize.define('Route', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
+    autoIncrement: true
   }
 })
 
