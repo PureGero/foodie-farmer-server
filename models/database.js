@@ -103,9 +103,6 @@ const StockType = sequelize.define('StockType', {
   },
   picture: {
     type: DataTypes.STRING
-  },
-  count: {
-    type: DataTypes.INTEGER
   }
 })
 
