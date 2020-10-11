@@ -191,7 +191,7 @@ sequelize.sync({ alter: true })
 
 db.Customers = Customers
 db.BankAccounts = BankAccounts
-db.farm = Farm
+db.Farm = Farm
 db.Producers = Producers
 db.StockType = StockType
 db.Stock = Stock
