@@ -101,12 +101,6 @@ const StockType = sequelize.define('StockType', {
     primaryKey: true,
     allowNull: false
   },
-  minPrice: {
-    type: DataTypes.INTEGER,
-  },
-  maxPrice: {
-    type: DataTypes.INTEGER,
-  },
   count: {
     type: DataTypes.INTEGER
   }
