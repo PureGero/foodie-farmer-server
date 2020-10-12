@@ -4,15 +4,11 @@ const Sequelize = require('sequelize')
 
 const router = express.Router()
 
-// Ensure customers are signed in
-router.use((req, res, next) => {
-  if (!req.email) return res.status(400).send('You are not logged in')
-
-  next()
-})
-
 // Get the customer's profile details
 router.get('/get_profile', async (req, res) => {
+  // Ensure customer is signed in
+  if (!req.email) return res.status(400).send('You are not logged in')
+
   // Get the Customer from the database
   let customers = await db.Customers.findAll({
     where: {
@@ -33,13 +29,44 @@ router.get('/get_profile', async (req, res) => {
   })
 })
 
+// Get a single item
+router.get('/get_item', async (req, res) => {
+  let id = req.query.id
+
+  if (!id) return res.status(400).send('Missing item id')
+
+  // Get the item from the database
+  let items = await db.Stock.findAll({
+    where: {
+      id: id
+    },
+    include: [db.Farm]
+  })
+
+  if (!items.length) return res.status(400).send('Could not find item')
+
+  let item = items[0]
+
+  res.send({
+    id: item.id,
+    name: item.name,
+    picture: item.picture,
+    description: item.description,
+    price: item.price,
+    farm: item.Farm.name,
+    location: item.Farm.address
+  })
+
+})
+
 // Get the list of all produces
 router.get('/get_produce', async (req, res) => {
-  // Get the Customer from the database
+  // Get the produce from the database
   let produces = await db.Stock.findAll({
     where: {
       isSelling: true
-    }
+    },
+    include: [db.Farm]
   })
 
   if (!produces.length) return res.status(400).send('Could not find profile')
@@ -51,7 +78,9 @@ router.get('/get_produce', async (req, res) => {
       name: produce.name,
       picture: produce.picture,
       description: produce.description,
-      price: produce.price
+      price: produce.price,
+      farm: produce.Farm.name,
+      location: produce.Farm.address
     })
   })
   res.send(result)
@@ -75,7 +104,7 @@ router.get('/search_items', async (req, res) => {
         id: 652,
         name: "Apple",
         image: "https://i.imgur.com/YRwlA.jpg",
-        cost: 5.55,
+        price: 5.55,
         farm: "Doug's Apple Farm",
         location: "Thulimbah QLD"
       }
@@ -86,7 +115,7 @@ router.get('/search_items', async (req, res) => {
         id: 711,
         name: "Orange",
         image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
-        cost: 7.00,
+        price: 7.00,
         farm: "Geoff's Orange Farm",
         location: "Mt Isa QLD"
       }
@@ -96,12 +125,14 @@ router.get('/search_items', async (req, res) => {
 
 // Get the customer's recommended items
 router.get('/list_recommend', async (req, res) => {
+  let count = req.query.count || 3;
+
   // Get 3 random items from the database
   let stocks = await db.Stock.findAll({
     where: {
       isSelling: true
     },
-    limit: 3,
+    limit: parseInt(count),
     order: Sequelize.literal('rand()'),
     include: [db.Farm]
   })
@@ -113,8 +144,9 @@ router.get('/list_recommend', async (req, res) => {
     result.push({
       id: stock.id,
       name: stock.name,
+      description: stock.description,
       image: stock.picture,
-      cost: stock.price,
+      price: stock.price,
       farm: stock.Farm.name,
       location: stock.Farm.address
     })
@@ -131,8 +163,8 @@ router.get('/list_group_purchases', async (req, res) => {
       id: 398,
       name: "Apple",
       image: "https://i.imgur.com/YRwlA.jpg",
-      cost: 4.02,
-      originalCost: 5.55,
+      price: 4.02,
+      originalPrice: 5.55,
       customerCount: 61,
       farm: "Doug's Apple Farm",
       location: "Thulimbah QLD"
@@ -140,8 +172,8 @@ router.get('/list_group_purchases', async (req, res) => {
       id: 398,
       name: "Apple",
       image: "https://i.imgur.com/YRwlA.jpg",
-      cost: 4.66,
-      originalCost: 5.55,
+      price: 4.66,
+      originalPrice: 5.55,
       customerCount: 45,
       farm: "Doug's Apple Farm",
       location: "Thulimbah QLD"
@@ -149,8 +181,8 @@ router.get('/list_group_purchases', async (req, res) => {
       id: 398,
       name: "Apple",
       image: "https://i.imgur.com/YRwlA.jpg",
-      cost: 5.12,
-      originalCost: 5.55,
+      price: 5.12,
+      originalPrice: 5.55,
       customerCount: 32,
       farm: "Doug's Apple Farm",
       location: "Thulimbah QLD"
@@ -158,8 +190,8 @@ router.get('/list_group_purchases', async (req, res) => {
       id: 425,
       name: "Orange",
       image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
-      cost: 6.58,
-      originalCost: 7.00,
+      price: 6.58,
+      originalPrice: 7.00,
       customerCount: 29,
       farm: "Geoff's Orange Farm",
       location: "Mt Isa QLD"
@@ -170,6 +202,9 @@ router.get('/list_group_purchases', async (req, res) => {
 // Edit the customer's address
 // `address` New address value
 router.post('/edit_address', async (req, res) => {
+  // Ensure customer is signed in
+  if (!req.email) return res.status(400).send('You are not logged in')
+
   let address = req.body.address
 
   if (!address) return res.status(400).send('Missing address')
@@ -187,6 +222,9 @@ router.post('/edit_address', async (req, res) => {
 // Edit the customer's bank account
 // `bankAccount` New bank account value
 router.post('/edit_bankaccount', async (req, res) => {
+  // Ensure customer is signed in
+  if (!req.email) return res.status(400).send('You are not logged in')
+
   let bankAccount = req.body.bankAccount
 
   if (!bankAccount) return res.status(400).send('Missing bankAccount')
