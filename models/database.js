@@ -34,6 +34,9 @@ const Customers = sequelize.define('Customers', {
   address: {
     type: DataTypes.STRING,
   },
+  deliverToCollectionPoint: {
+    type: DataTypes.BOOLEAN,
+  },
   deliveryRoute: {
     type: DataTypes.STRING,
   }

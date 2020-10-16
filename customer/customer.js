@@ -13,19 +13,24 @@ router.get('/get_profile', async (req, res) => {
   let customers = await db.Customers.findAll({
     where: {
       userName: req.email
-    }
+    },
+    include: [db.BankAccounts]
   })
 
   if (!customers.length) return res.status(400).send('Could not find profile')
 
   let customer = customers[0]
 
+  if (!customer.BankAccount) customer.BankAccount = {}
+
   res.send({
     userName: customer.userName,
     name: customer.name,
     picture: customer.picture,
     address: customer.address,
-    bankAccount: customer.bankAccount
+    bsb: customer.BankAccount.BSB,
+    accountNumber: customer.BankAccount.accountNumber,
+    accountName: customer.BankAccount.name
   })
 })
 
@@ -71,7 +76,7 @@ router.get('/get_produce', async (req, res) => {
 
   if (!produces.length) return res.status(400).send('Could not find profile')
 
-  let result = [];
+  let result = []
   produces.forEach(produce => {
     result.push({
       id: produce.id,
@@ -125,7 +130,7 @@ router.get('/search_items', async (req, res) => {
 
 // Get the customer's recommended items
 router.get('/list_recommend', async (req, res) => {
-  let count = req.query.count || 3;
+  let count = req.query.count || 3
 
   // Get 3 random items from the database
   let stocks = await db.Stock.findAll({
@@ -139,7 +144,7 @@ router.get('/list_recommend', async (req, res) => {
 
   if (!stocks.length) return res.status(400).send('Could not find stocks')
 
-  let result = [];
+  let result = []
   stocks.forEach(stock => {
     result.push({
       id: stock.id,
@@ -225,20 +230,43 @@ router.post('/edit_bankaccount', async (req, res) => {
   // Ensure customer is signed in
   if (!req.email) return res.status(400).send('You are not logged in')
 
-  let bankAccount = req.body.bankAccount
+  let bsb = req.body.bsb
+  let accountNumber = req.body.accountNumber
+  let accountName = req.body.accountName
 
-  if (!bankAccount) return res.status(400).send('Missing bankAccount')
+  if (!bsb || !accountNumber || !accountName) return res.status(400).send('Missing parameters')
 
-  bankAccount = parseInt(bankAccount)
+  bsb = parseInt(bsb)
+  accountNumber = parseInt(accountNumber)
 
-  if (isNaN(bankAccount)) return res.status(400).send('Bank account must be a number')
+  if (isNaN(bsb) || isNaN(accountNumber)) return res.status(400).send('Parameters must be numbers')
 
-  // Edit bank account in database
-  await db.Customers.update({ bankAccount: bankAccount }, {
+  let customer = await db.Customers.findOne({
     where: {
       userName: req.email
-    }
+    },
+    include: [db.BankAccounts]
   })
+
+  let bankAccount = customer.BankAccount
+
+  if (!bankAccount) {
+    // Create the bank account in database
+    bankAccount = await db.BankAccounts.create({ BSB: bsb, accountNumber: accountNumber, name: accountName })
+
+    await db.Customers.update({ BankAccountNumber: bankAccount.number }, {
+      where: {
+        userName: req.email
+      }
+    })
+  } else {
+    // Edit bank account in database
+    await db.BankAccounts.update({ BSB: bsb, accountNumber: accountNumber, name: accountName }, {
+      where: {
+        number: bankAccount.number
+      }
+    })
+  }
 
   res.send('Bank account successfully changed')
 })
