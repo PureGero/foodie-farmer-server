@@ -28,6 +28,7 @@ router.get('/get_profile', async (req, res) => {
     name: customer.name,
     picture: customer.picture,
     address: customer.address,
+    deliverToCollectionPoint: customer.deliverToCollectionPoint,
     bsb: customer.BankAccount.BSB,
     accountNumber: customer.BankAccount.accountNumber,
     accountName: customer.BankAccount.name
@@ -211,11 +212,12 @@ router.post('/edit_address', async (req, res) => {
   if (!req.email) return res.status(400).send('You are not logged in')
 
   let address = req.body.address
+  let deliverToCollectionPoint = req.body.deliverToCollectionPoint
 
   if (!address) return res.status(400).send('Missing address')
 
   // Edit bank account in database
-  await db.Customers.update({ address: address }, {
+  await db.Customers.update({ address: address, deliverToCollectionPoint: deliverToCollectionPoint }, {
     where: {
       userName: req.email
     }
