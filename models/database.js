@@ -82,22 +82,6 @@ const Farm = sequelize.define('Farm', {
   }
 })
 
-const Producers = sequelize.define('Producers', {
-  // Model attributes are defined here
-  userName: {
-    type: DataTypes.STRING,
-    primaryKey: true,
-    allowNull: false
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  picture: {
-    type: DataTypes.STRING,
-  }
-})
-
 const StockType = sequelize.define('StockType', {
   name: {
     type: DataTypes.STRING,
@@ -178,8 +162,7 @@ const Driver = sequelize.define('Driver', {
 })
 
 // Database Associations
-Producers.belongsTo(Farm)
-Producers.belongsTo(BankAccounts)
+Customers.belongsTo(Farm)
 Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
@@ -195,7 +178,6 @@ sequelize.sync({ alter: true })
 db.Customers = Customers
 db.BankAccounts = BankAccounts
 db.Farm = Farm
-db.Producers = Producers
 db.StockType = StockType
 db.Stock = Stock
 db.Order = Order

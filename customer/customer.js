@@ -14,7 +14,7 @@ router.get('/get_profile', async (req, res) => {
     where: {
       userName: req.email
     },
-    include: [db.BankAccounts]
+    include: [db.BankAccounts, db.Farm]
   })
 
   if (!customers.length) return res.status(400).send('Could not find profile')
@@ -22,6 +22,7 @@ router.get('/get_profile', async (req, res) => {
   let customer = customers[0]
 
   if (!customer.BankAccount) customer.BankAccount = {}
+  if (!customer.Farm) customer.Farm = {}
 
   res.send({
     userName: customer.userName,
@@ -31,7 +32,9 @@ router.get('/get_profile', async (req, res) => {
     deliverToCollectionPoint: customer.deliverToCollectionPoint,
     bsb: customer.BankAccount.BSB,
     accountNumber: customer.BankAccount.accountNumber,
-    accountName: customer.BankAccount.name
+    accountName: customer.BankAccount.name,
+    farmName: customer.Farm.name,
+    farmAddress: customer.Farm.address
   })
 })
 
@@ -271,6 +274,46 @@ router.post('/edit_bankaccount', async (req, res) => {
   }
 
   res.send('Bank account successfully changed')
+})
+
+// Edit the customer's farm details
+router.post('/edit_farm', async (req, res) => {
+  // Ensure customer is signed in
+  if (!req.email) return res.status(400).send('You are not logged in')
+
+  let farmName = req.body.farmName
+  let farmAddress = req.body.farmAddress
+
+  if (!farmName || !farmAddress) return res.status(400).send('Missing parameters')
+
+  let customer = await db.Customers.findOne({
+    where: {
+      userName: req.email
+    },
+    include: [db.Farm]
+  })
+
+  let farm = customer.Farm
+
+  if (!farm) {
+    // Create the bank account in database
+    farm = await db.Farm.create({ name: farmName, address: farmAddress })
+
+    await db.Customers.update({ FarmId: farm.id }, {
+      where: {
+        userName: req.email
+      }
+    })
+  } else {
+    // Edit bank account in database
+    await db.Farm.update({ name: farmName, address: farmAddress }, {
+      where: {
+        id: farm.id
+      }
+    })
+  }
+
+  res.send('Farm details successfully changed')
 })
 
 module.exports = router
