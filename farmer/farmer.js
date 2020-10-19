@@ -78,7 +78,8 @@ router.post('/edit_farm', async (req, res) => {
 })
 
 // Add a product to the farmer's store
-router.post('/add_stock', (req, res) => {
+router.post('/add_stock', async (req, res) => {
+  let id = req.body.id
   let name = req.body.name
   let description = req.body.description
   let picture = req.body.picture
@@ -88,10 +89,10 @@ router.post('/add_stock', (req, res) => {
   let isSelling = req.body.isSelling || 1
   let stockType = req.body.stockType
 
-  if (!name || !description || !picture || !quantity || !expirationDate || !price) return res.status(400).send('Missing paramteres')
+  if (!name || !description || !picture || !expirationDate || !price) return res.status(400).send('Missing paramteres')
 
   quantity = parseInt(quantity)
-  price = partseInt(price)
+  price = parseFloat(price)
 
   if (quantity <= 0 || isNaN(quantity)) return res.status(400).send('Quantity must be a positive integer')
   if (price <= 0 || isNaN(price)) return res.status(400).send('Price must be a positive real')
@@ -106,7 +107,8 @@ router.post('/add_stock', (req, res) => {
     }
   })
 
-  const stock = await db.Stock.create({
+  let stock
+  let stockDetails = {
     expirationDate: expirationDate,
     quantity: quantity,
     name: name,
@@ -116,9 +118,35 @@ router.post('/add_stock', (req, res) => {
     isSelling: isSelling,
     StockTypeName: stockType,
     FarmId: customer.FarmId
-  })
+  }
 
-  res.send('Stock successfully added')
+  if (id) {
+    // Id specified, update the stock
+    await db.Customers.update(stockDetails, {
+      where: {
+        id: id
+      }
+    })
+
+    stock = await db.Stock.findOne({
+      where: {
+        id: id
+      }
+    })
+  } else {
+    // No id specified, create it
+    stock = await db.Stock.create(stockDetails)
+  }
+
+  res.send({
+    id: stock.id,
+    name: stock.name,
+    description: stock.description,
+    picture: stock.picture,
+    price: stock.price,
+    quantity: stock.quantity,
+    stockType: stock.StockTypeName,
+  })
 })
 
 module.exports = router

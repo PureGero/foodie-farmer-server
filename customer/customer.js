@@ -208,6 +208,21 @@ router.get('/list_group_purchases', async (req, res) => {
   ])
 })
 
+// List the stock types
+router.get('/list_stock_types', async (req, res) => {
+  // Get the stock types from the database
+  let stockTypes = await db.StockType.findAll()
+
+  let result = []
+  stockTypes.forEach(stockType => {
+    result.push({
+      name: stockType.name,
+      picture: stockType.picture
+    })
+  })
+  res.send(result)
+})
+
 // Edit the customer's address
 // `address` New address value
 router.post('/edit_address', async (req, res) => {
