@@ -34,7 +34,8 @@ router.get('/get_farm_stock', async (req, res) => {
       picture: stock.picture,
       price: stock.price,
       quantity: stock.quantity,
-      stockType: stock.StockTypeName,
+      expirationDate: stock.expirationDate,
+      stockType: stock.StockTypeName
     })
   })
   res.send(result)
@@ -122,7 +123,7 @@ router.post('/add_stock', async (req, res) => {
 
   if (id) {
     // Id specified, update the stock
-    await db.Customers.update(stockDetails, {
+    await db.Stock.update(stockDetails, {
       where: {
         id: id
       }
