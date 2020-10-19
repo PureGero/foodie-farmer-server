@@ -116,7 +116,7 @@ const Stock = sequelize.define('Stock', {
     type: DataTypes.STRING
   },
   price: {
-    type: DataTypes.INTEGER
+    type: DataTypes.DOUBLE
   },
   isSelling: {
     type: DataTypes.BOOLEAN

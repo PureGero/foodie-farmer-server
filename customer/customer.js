@@ -276,44 +276,4 @@ router.post('/edit_bankaccount', async (req, res) => {
   res.send('Bank account successfully changed')
 })
 
-// Edit the customer's farm details
-router.post('/edit_farm', async (req, res) => {
-  // Ensure customer is signed in
-  if (!req.email) return res.status(400).send('You are not logged in')
-
-  let farmName = req.body.farmName
-  let farmAddress = req.body.farmAddress
-
-  if (!farmName || !farmAddress) return res.status(400).send('Missing parameters')
-
-  let customer = await db.Customers.findOne({
-    where: {
-      userName: req.email
-    },
-    include: [db.Farm]
-  })
-
-  let farm = customer.Farm
-
-  if (!farm) {
-    // Create the bank account in database
-    farm = await db.Farm.create({ name: farmName, address: farmAddress })
-
-    await db.Customers.update({ FarmId: farm.id }, {
-      where: {
-        userName: req.email
-      }
-    })
-  } else {
-    // Edit bank account in database
-    await db.Farm.update({ name: farmName, address: farmAddress }, {
-      where: {
-        id: farm.id
-      }
-    })
-  }
-
-  res.send('Farm details successfully changed')
-})
-
 module.exports = router
