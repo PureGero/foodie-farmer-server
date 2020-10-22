@@ -1,5 +1,6 @@
 const express = require('express')
 const db = require('../models/database')
+const Sequelize = require('sequelize')
 
 const router = express.Router()
 
@@ -36,6 +37,51 @@ router.get('/get_farm_stock', async (req, res) => {
       quantity: stock.quantity,
       expirationDate: stock.expirationDate,
       stockType: stock.StockTypeName
+    })
+  })
+  res.send(result)
+})
+
+// Get the list of the farmer's group purchases
+router.get('/get_farm_group_purchases', async (req, res) => {
+  let customer = await db.Customers.findOne({
+    where: {
+      userName: req.email
+    }
+  })
+
+  // Get the produce from the database
+  let groupPurchases = await db.GroupPurchase.findAll({
+    include: [{
+      model: db.Stock, 
+      where: {
+        FarmId: customer.FarmId
+      }
+    }, {
+      model: db.GroupPurchaseOrder
+    }],
+    where: {
+      endTime: {
+        [Sequelize.Op.gte]: new Date()
+      }
+    }
+  })
+
+  let result = []
+  groupPurchases.forEach(groupPurchase => {
+    groupPurchase.totalQuantity = 0
+    groupPurchase.GroupPurchaseOrders.forEach(order => 
+      groupPurchase.totalQuantity += order.quantity)
+
+    result.push({
+      id: groupPurchase.id,
+      stockId: groupPurchase.Stock.id,
+      name: groupPurchase.Stock.name,
+      picture: groupPurchase.Stock.picture,
+      endTime: groupPurchase.endTime,
+      capacity: groupPurchase.capacity,
+      maxDiscount: groupPurchase.maxDiscount,
+      totalQuantity: groupPurchase.totalQuantity
     })
   })
   res.send(result)
@@ -147,6 +193,75 @@ router.post('/add_stock', async (req, res) => {
     price: stock.price,
     quantity: stock.quantity,
     stockType: stock.StockTypeName,
+  })
+})
+
+// Add a group purchase to the farmer's store
+router.post('/add_group_purchase', async (req, res) => {
+  let id = req.body.id
+  let stockId = req.body.stockId
+  let endTime = req.body.endTime
+  let capacity = req.body.capacity
+  let maxDiscount = req.body.maxDiscount
+
+  if (!stockId || !endTime || !capacity || !maxDiscount) return res.status(400).send('Missing paramteres')
+
+  capacity = parseInt(capacity)
+  maxDiscount = parseFloat(maxDiscount)
+
+  if (capacity <= 0 || isNaN(capacity)) return res.status(400).send('Capacity must be a positive integer')
+  if (maxDiscount <= 0 || isNaN(maxDiscount)) return res.status(400).send('Max discount must be a positive real')
+
+  endTime = new Date(endTime)
+
+  if (isNaN(endTime.getTime()) || endTime.getTime() < Date.now() + 60000) return res.status(400).send('Invalid end time')
+
+  let groupPurchase
+  let groupPurchaseDetails = {
+    endTime: endTime,
+    capacity: capacity,
+    maxDiscount: maxDiscount,
+    StockId: stockId
+  }
+
+  if (id) {
+    // Id specified, update the group purchase
+    await db.GroupPurchase.update(groupPurchaseDetails, {
+      where: {
+        id: id
+      }
+    })
+  } else {
+    // No id specified, create it
+    groupPurchase = await db.GroupPurchase.create(groupPurchaseDetails)
+    id = groupPurchase.id
+  }
+
+  groupPurchase = await db.GroupPurchase.findOne({
+    include: [{
+      model: db.Stock
+    }, {
+      model: db.GroupPurchaseOrder
+    }],
+    where: {
+      id: id
+    }
+  })
+
+  groupPurchase.totalQuantity = 0
+  groupPurchase.GroupPurchaseOrders.forEach(order => 
+    groupPurchase.totalQuantity += order.quantity)
+
+
+  res.send({
+    id: groupPurchase.id,
+    stockId: groupPurchase.Stock.id,
+    name: groupPurchase.Stock.name,
+    picture: groupPurchase.Stock.picture,
+    endTime: groupPurchase.endTime,
+    capacity: groupPurchase.capacity,
+    maxDiscount: groupPurchase.maxDiscount,
+    totalQuantity: groupPurchase.totalQuantity
   })
 })
 

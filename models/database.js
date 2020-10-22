@@ -132,15 +132,9 @@ const Order = sequelize.define('Order',  {
     primaryKey: true,
     allowNull: false,
     autoIncrement: true
-  }
-})
-
-const OrderItem = sequelize.define('OrderItem', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-    autoIncrement: true
+  },
+  quantity: {
+    type: DataTypes.INTEGER
   }
 })
 
@@ -161,17 +155,49 @@ const Driver = sequelize.define('Driver', {
   }
 })
 
+const GroupPurchase = sequelize.define('GroupPurchase', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true
+  },
+  endTime: {
+    type: DataTypes.DATE
+  },
+  capacity: {
+    type: DataTypes.INTEGER
+  },
+  maxDiscount: {
+    type: DataTypes.DOUBLE
+  }
+})
+
+const GroupPurchaseOrder = sequelize.define('GroupPurchaseOrder', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true
+  },
+  quantity: {
+    type: DataTypes.INTEGER
+  }
+})
+
 // Database Associations
 Customers.belongsTo(Farm)
 Customers.belongsTo(BankAccounts)
 Stock.belongsTo(StockType)
 Stock.belongsTo(Farm)
-OrderItem.belongsTo(Stock)
+Order.belongsTo(Stock)
 Order.belongsTo(Customers)
-Order.hasMany(OrderItem)
 Farm.hasOne(Route, {as: 'Start'})
 Customers.hasMany(Route)
 Driver.hasMany(Route)
+GroupPurchase.belongsTo(Stock)
+GroupPurchase.hasMany(GroupPurchaseOrder)
+GroupPurchaseOrder.belongsTo(Customers)
 
 sequelize.sync({ alter: true })
 
@@ -181,6 +207,7 @@ db.Farm = Farm
 db.StockType = StockType
 db.Stock = Stock
 db.Order = Order
-db.OrderItem = OrderItem
+db.GroupPurchase = GroupPurchase
+db.GroupPurchaseOrder = GroupPurchaseOrder
 
 module.exports = db
