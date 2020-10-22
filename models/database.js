@@ -125,7 +125,7 @@ const Stock = sequelize.define('Stock', {
     type: DataTypes.STRING
   },
   rating: {
-    type: DataTypes.float
+    type: DataTypes.DOUBLE
   },
   comment: {
     type: DataTypes.STRING
