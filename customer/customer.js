@@ -62,6 +62,9 @@ router.get('/get_item', async (req, res) => {
     picture: item.picture,
     description: item.description,
     price: item.price,
+    detail: item.detailed_description,
+    rating: item.rating,
+    comment: item.comment,
     farm: item.Farm.name,
     location: item.Farm.address
   })
