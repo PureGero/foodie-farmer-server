@@ -143,6 +143,47 @@ router.get('/get_produce', async (req, res) => {
 
 })
 
+// Get the list of all group purchase items
+router.get('/get_group_items', async (req, res) => {
+  // Get the items from the database
+  let groupPurchases = await db.GroupPurchase.findAll({
+    include: [{
+      model: db.Stock, 
+      include: [db.Farm]
+    }, {
+      model: db.GroupPurchaseOrder
+    }]
+  })
+
+  let results = []
+
+  groupPurchases.forEach(groupPurchase => {
+    groupPurchase.totalQuantity = 0
+    groupPurchase.GroupPurchaseOrders.forEach(order => 
+      groupPurchase.totalQuantity += order.quantity)
+
+    results.push({
+      id: groupPurchase.id,
+      capacity: groupPurchase.capacity,
+      remaining: groupPurchase.capacity - groupPurchase.totalQuantity,
+      endTime: groupPurchase.endTime,
+      maxDiscount: groupPurchase.maxDiscount,
+      name: groupPurchase.Stock.name,
+      picture: groupPurchase.Stock.picture,
+      description: groupPurchase.Stock.description,
+      price: groupPurchase.Stock.price,
+      detail: groupPurchase.Stock.detailed_description,
+      rating: groupPurchase.Stock.rating,
+      comment: groupPurchase.Stock.comment,
+      farm: groupPurchase.Stock.Farm.name,
+      location: groupPurchase.Stock.Farm.address,
+    })
+  })
+
+  res.send(results)
+
+})
+
 
 // Get the items the customer could purchase matching a specified query
 // `query` Query to search for
