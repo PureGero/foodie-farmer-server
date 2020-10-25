@@ -71,6 +71,50 @@ router.get('/get_item', async (req, res) => {
 
 })
 
+// Get a single group purchase item
+router.get('/get_group_item', async (req, res) => {
+  let id = req.query.id
+
+  if (!id) return res.status(400).send('Missing item id')
+
+  // Get the item from the database
+  let groupPurchase = await db.GroupPurchase.findOne({
+    include: [{
+      model: db.Stock, 
+      include: [db.Farm]
+    }, {
+      model: db.GroupPurchaseOrder
+    }],
+    where: {
+      id: id
+    }
+  })
+
+  if (!groupPurchase) return res.status(400).send('Could not find item')
+
+  groupPurchase.totalQuantity = 0
+  groupPurchase.GroupPurchaseOrders.forEach(order => 
+    groupPurchase.totalQuantity += order.quantity)
+
+  res.send({
+    id: groupPurchase.id,
+    capacity: groupPurchase.capacity,
+    remaining: groupPurchase.capacity - groupPurchase.totalQuantity,
+    endTime: groupPurchase.endTime,
+    maxDiscount: groupPurchase.maxDiscount,
+    name: groupPurchase.Stock.name,
+    picture: groupPurchase.Stock.picture,
+    description: groupPurchase.Stock.description,
+    price: groupPurchase.Stock.price,
+    detail: groupPurchase.Stock.detailed_description,
+    rating: groupPurchase.Stock.rating,
+    comment: groupPurchase.Stock.comment,
+    farm: groupPurchase.Stock.Farm.name,
+    location: groupPurchase.Stock.Farm.address,
+  })
+
+})
+
 // Get the list of all produces
 router.get('/get_produce', async (req, res) => {
   // Get the produce from the database
