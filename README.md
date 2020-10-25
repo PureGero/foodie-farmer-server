@@ -45,9 +45,12 @@ Get the items the customer could purchase matching a specified query
 
 Get the customer's recommended items
 
-### GET /customer/list_group_purchases
+### GET /customer/get_group_items
 
-Get the group purchases that the customer can join in on
+Get the list of group purchase items
+
+`id` The id of the group purchase to get (optional)  
+`limit` The limit of results to return (optional)  
 
 ### POST /customer/edit_address
 

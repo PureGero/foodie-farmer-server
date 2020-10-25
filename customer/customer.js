@@ -71,50 +71,6 @@ router.get('/get_item', async (req, res) => {
 
 })
 
-// Get a single group purchase item
-router.get('/get_group_item', async (req, res) => {
-  let id = req.query.id
-
-  if (!id) return res.status(400).send('Missing item id')
-
-  // Get the item from the database
-  let groupPurchase = await db.GroupPurchase.findOne({
-    include: [{
-      model: db.Stock, 
-      include: [db.Farm]
-    }, {
-      model: db.GroupPurchaseOrder
-    }],
-    where: {
-      id: id
-    }
-  })
-
-  if (!groupPurchase) return res.status(400).send('Could not find item')
-
-  groupPurchase.totalQuantity = 0
-  groupPurchase.GroupPurchaseOrders.forEach(order => 
-    groupPurchase.totalQuantity += order.quantity)
-
-  res.send({
-    id: groupPurchase.id,
-    capacity: groupPurchase.capacity,
-    remaining: groupPurchase.capacity - groupPurchase.totalQuantity,
-    endTime: groupPurchase.endTime,
-    maxDiscount: groupPurchase.maxDiscount,
-    name: groupPurchase.Stock.name,
-    picture: groupPurchase.Stock.picture,
-    description: groupPurchase.Stock.description,
-    price: groupPurchase.Stock.price,
-    detail: groupPurchase.Stock.detailed_description,
-    rating: groupPurchase.Stock.rating,
-    comment: groupPurchase.Stock.comment,
-    farm: groupPurchase.Stock.Farm.name,
-    location: groupPurchase.Stock.Farm.address,
-  })
-
-})
-
 // Get the list of all produces
 router.get('/get_produce', async (req, res) => {
   // Get the produce from the database
@@ -143,7 +99,9 @@ router.get('/get_produce', async (req, res) => {
 
 })
 
-// Get the list of all group purchase items
+// Get the list of group purchase items
+// `id` The id of the group purchase to get (optional)  
+// `limit` The limit of results to return (optional)  
 router.get('/get_group_items', async (req, res) => {
   // Get the items from the database
   let groupPurchases = await db.GroupPurchase.findAll({
@@ -152,7 +110,13 @@ router.get('/get_group_items', async (req, res) => {
       include: [db.Farm]
     }, {
       model: db.GroupPurchaseOrder
-    }]
+    }],
+    where: {
+      id: {
+        [Sequelize.Op.like]: req.query.id || '%'
+      }
+    },
+    limit: parseInt(req.query.limit) || 1000
   })
 
   let results = []
@@ -249,51 +213,6 @@ router.get('/list_recommend', async (req, res) => {
     })
   })
   res.send(result)
-})
-
-// Get the group purchases that the customer can join in on
-router.get('/list_group_purchases', async (req, res) => {
-  // TODO Generate group purchases from the database
-
-  res.send([
-    {
-      id: 398,
-      name: "Apple",
-      image: "https://i.imgur.com/YRwlA.jpg",
-      price: 4.02,
-      originalPrice: 5.55,
-      customerCount: 61,
-      farm: "Doug's Apple Farm",
-      location: "Thulimbah QLD"
-    }, {
-      id: 398,
-      name: "Apple",
-      image: "https://i.imgur.com/YRwlA.jpg",
-      price: 4.66,
-      originalPrice: 5.55,
-      customerCount: 45,
-      farm: "Doug's Apple Farm",
-      location: "Thulimbah QLD"
-    }, {
-      id: 398,
-      name: "Apple",
-      image: "https://i.imgur.com/YRwlA.jpg",
-      price: 5.12,
-      originalPrice: 5.55,
-      customerCount: 32,
-      farm: "Doug's Apple Farm",
-      location: "Thulimbah QLD"
-    }, {
-      id: 425,
-      name: "Orange",
-      image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
-      price: 6.58,
-      originalPrice: 7.00,
-      customerCount: 29,
-      farm: "Geoff's Orange Farm",
-      location: "Mt Isa QLD"
-    }
-  ])
 })
 
 // List the stock types
