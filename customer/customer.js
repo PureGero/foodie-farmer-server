@@ -38,61 +38,36 @@ router.get('/get_profile', async (req, res) => {
   })
 })
 
-// Get a single item
-router.get('/get_item', async (req, res) => {
-  let id = req.query.id
-
-  if (!id) return res.status(400).send('Missing item id')
-
-  // Get the item from the database
-  let items = await db.Stock.findAll({
-    where: {
-      id: id
-    },
-    include: [db.Farm]
-  })
-
-  if (!items.length) return res.status(400).send('Could not find item')
-
-  let item = items[0]
-
-  res.send({
-    id: item.id,
-    name: item.name,
-    picture: item.picture,
-    description: item.description,
-    price: item.price,
-    detail: item.detailed_description,
-    rating: item.rating,
-    comment: item.comment,
-    farm: item.Farm.name,
-    location: item.Farm.address
-  })
-
-})
-
-// Get the list of all produces
+// Get the list of produces
+// `id` The id of the produce to get (optional)  
+// `limit` The limit of results to return (optional)  
 router.get('/get_produce', async (req, res) => {
   // Get the produce from the database
-  let produces = await db.Stock.findAll({
+  let items = await db.Stock.findAll({
+    include: [db.Farm],
     where: {
-      isSelling: true
+      isSelling: true,
+      id: {
+        [Sequelize.Op.like]: req.query.id || '%'
+      }
     },
-    include: [db.Farm]
+    limit: parseInt(req.query.limit) || 1000,
+    order: Sequelize.literal('rand()')
   })
 
-  if (!produces.length) return res.status(400).send('Could not find profile')
-
   let result = []
-  produces.forEach(produce => {
+  items.forEach(item => {
     result.push({
-      id: produce.id,
-      name: produce.name,
-      picture: produce.picture,
-      description: produce.description,
-      price: produce.price,
-      farm: produce.Farm.name,
-      location: produce.Farm.address
+      id: item.id,
+      name: item.name,
+      picture: item.picture,
+      description: item.description,
+      price: item.price,
+      detail: item.detailed_description,
+      rating: item.rating,
+      comment: item.comment,
+      farm: item.Farm.name,
+      location: item.Farm.address
     })
   })
   res.send(result)
@@ -116,7 +91,8 @@ router.get('/get_group_items', async (req, res) => {
         [Sequelize.Op.like]: req.query.id || '%'
       }
     },
-    limit: parseInt(req.query.limit) || 1000
+    limit: parseInt(req.query.limit) || 1000,
+    order: Sequelize.literal('rand()')
   })
 
   let results = []
@@ -148,47 +124,12 @@ router.get('/get_group_items', async (req, res) => {
 
 })
 
-
-// Get the items the customer could purchase matching a specified query
-// `query` Query to search for
-router.get('/search_items', async (req, res) => {
-  // TODO Generate items from the database
-  let query = req.body.query
-
-  if (!query) return res.status(400).send('Missing query')
-
-  // For testing purposes, sends an apple if an apple was searched for,
-  // otherwise sends an orange
-  if (~query.toLowerCase().indexOf('apple')) {
-    res.send([
-      {
-        id: 652,
-        name: "Apple",
-        image: "https://i.imgur.com/YRwlA.jpg",
-        price: 5.55,
-        farm: "Doug's Apple Farm",
-        location: "Thulimbah QLD"
-      }
-    ])
-  } else {
-    res.send([
-      {
-        id: 711,
-        name: "Orange",
-        image: "https://i0.wp.com/miakouppa.com/wp-content/uploads/2017/02/img_3938.jpg?resize=599%2C799&ssl=1",
-        price: 7.00,
-        farm: "Geoff's Orange Farm",
-        location: "Mt Isa QLD"
-      }
-    ])
-  }
-})
-
 // Get the customer's recommended items
+// `count` The number of recommended items to return (default is 3)  
 router.get('/list_recommend', async (req, res) => {
   let count = req.query.count || 3
 
-  // Get 3 random items from the database
+  // Get up to count number of random items from the database
   let stocks = await db.Stock.findAll({
     where: {
       isSelling: true
@@ -197,8 +138,6 @@ router.get('/list_recommend', async (req, res) => {
     order: Sequelize.literal('rand()'),
     include: [db.Farm]
   })
-
-  if (!stocks.length) return res.status(400).send('Could not find stocks')
 
   let result = []
   stocks.forEach(stock => {
@@ -252,7 +191,9 @@ router.post('/edit_address', async (req, res) => {
 })
 
 // Edit the customer's bank account
-// `bankAccount` New bank account value
+// `bsb` New bsb value  
+// `accountNumber` New account number value  
+// `accountName` New acount name value  
 router.post('/edit_bankaccount', async (req, res) => {
   // Ensure customer is signed in
   if (!req.email) return res.status(400).send('You are not logged in')

@@ -88,6 +88,8 @@ router.get('/get_farm_group_purchases', async (req, res) => {
 })
 
 // Edit the farmer's farm details
+// `farmName` The name of the farm  
+// `farmAddress` The address of the farm  
 router.post('/edit_farm', async (req, res) => {
   let farmName = req.body.farmName
   let farmAddress = req.body.farmAddress
@@ -125,6 +127,15 @@ router.post('/edit_farm', async (req, res) => {
 })
 
 // Add a product to the farmer's store
+// `id` Id of the product to edit (optional, if missing a new product will be
+//   created)  
+// `name` Name of the product  
+// `description` Description of the product  
+// `picture` A url to a picture of the product  
+// `quantity` The amount of stock available  
+// `expirationDate` When the product will expire  
+// `price` The price of the product  
+// `type` Type of the product  
 router.post('/add_stock', async (req, res) => {
   let id = req.body.id
   let name = req.body.name
@@ -197,6 +208,14 @@ router.post('/add_stock', async (req, res) => {
 })
 
 // Add a group purchase to the farmer's store
+// `id` Id of the group purchase to edit (optional, if missing a new group
+//   purchase will be created)  
+// `stockId` The id of the stock to use for the group purchase  
+// `endTime` When the grou purchase will close  
+// `capacity` The maximum number of products that can be bought as part of this
+//         group purchase  
+// `maxDiscount` The discount value if all stock in this group purchase is
+//            bought  
 router.post('/add_group_purchase', async (req, res) => {
   let id = req.body.id
   let stockId = req.body.stockId
