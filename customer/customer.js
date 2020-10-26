@@ -169,6 +169,21 @@ router.get('/list_stock_types', async (req, res) => {
   res.send(result)
 })
 
+// List the farms
+router.get('/list_farms', async (req, res) => {
+  // Get the stock types from the database
+  let farms = await db.Farm.findAll()
+
+  let result = []
+  farms.forEach(farm => {
+    result.push({
+      name: farm.name,
+      address: farm.address
+    })
+  })
+  res.send(result)
+})
+
 // Edit the customer's address
 // `address` New address value
 router.post('/edit_address', async (req, res) => {

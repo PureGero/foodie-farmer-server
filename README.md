@@ -59,6 +59,10 @@ Get the customer's recommended items
 
 List the stock types
 
+### GET /customer/list_farms
+
+List the farms
+
 ### POST /customer/edit_address
 
 Edit the customer's address
