@@ -178,7 +178,9 @@ router.get('/list_farms', async (req, res) => {
   farms.forEach(farm => {
     result.push({
       name: farm.name,
-      address: farm.address
+      address: farm.address,
+      image: farm.image, 
+      description: farm.description
     })
   })
   res.send(result)
