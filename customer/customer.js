@@ -186,6 +186,37 @@ router.get('/list_farms', async (req, res) => {
   res.send(result)
 })
 
+// Place an order on either quick purchase or group purchase items
+// The body of the request should be a json array of objects with the keys:  
+// `id` The id of the quick purchase or group purchase item
+// `count` The number of items to order
+// `groupPurchase` True if this item is a group purchase
+router.post('/place_order', async (req, res) => {
+  // Ensure customer is signed in
+  if (!req.email) return res.status(400).send('You are not logged in')
+
+  // For each item ordered
+  req.body.forEach(item => {
+    if (item.groupPurchase) {
+      // Place an order for a group purchase
+      db.GroupPurchaseOrder.create({
+        GroupPurchaseId: item.id,
+        quantity: item.count,
+        CustomerUserName: req.email
+      })
+    } else {
+      // Place an order for a quick purchase
+      db.Order.create({
+        StockId: item.id,
+        quantity: item.count,
+        CustomerUserName: req.email
+      })
+    }
+  })
+
+  res.send('Success')
+})
+
 // Edit the customer's address
 // `address` New address value
 router.post('/edit_address', async (req, res) => {

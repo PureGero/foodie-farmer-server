@@ -1,15 +1,16 @@
+const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const express = require('express')
-const expressFormData = require('express-form-data')
 
 const PORT = 3000
 
 const app = express()
 
 // Third party parsers
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(expressFormData.parse())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 // foodie-farmer models
 const db = require('./models/database')

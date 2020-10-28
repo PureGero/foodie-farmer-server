@@ -63,6 +63,15 @@ List the stock types
 
 List the farms
 
+### GET /customer/place_order
+
+Place an order on either quick purchase or group purchase items
+
+The body of the request should be a json array of objects with the keys:  
+`id` The id of the quick purchase or group purchase item  
+`count` The number of items to order  
+`groupPurchase` True if this item is a group purchase  
+
 ### POST /customer/edit_address
 
 Edit the customer's address
