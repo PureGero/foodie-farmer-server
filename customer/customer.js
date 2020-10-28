@@ -217,6 +217,55 @@ router.post('/place_order', async (req, res) => {
   res.send('Success')
 })
 
+// List the customer's orders
+router.get('/list_orders', async (req, res) => {
+  // Ensure customer is signed in
+  if (!req.email) return res.status(400).send('You are not logged in')
+
+  let orders = await db.Order.findAll({
+    where: {
+      CustomerUserName: req.email
+    },
+    include: [db.Stock]
+  })
+
+  let groupPurchaseOrders = await db.GroupPurchaseOrder.findAll({
+    where: {
+      CustomerUserName: req.email
+    },
+    include: [{
+      model: db.GroupPurchase,
+      include: [db.Stock]
+    }]
+  })
+
+  let results = []
+
+  orders.forEach(order => {
+    results.push({
+      name: order.Stock.name,
+      price: order.Stock.price,
+      picture: order.Stock.picture,
+      quantity: order.quantity,
+      date: order.createdAt,
+      status: 'Pending'
+    })
+  })
+
+  groupPurchaseOrders.forEach(groupPurchaseOrder => {
+    results.push({
+      name: groupPurchaseOrder.GroupPurchase.Stock.name,
+      price: groupPurchaseOrder.GroupPurchase.Stock.price,
+      picture: groupPurchaseOrder.GroupPurchase.Stock.picture,
+      quantity: groupPurchaseOrder.quantity,
+      date: groupPurchaseOrder.createdAt,
+      status: 'Awaiting Group Purchase'
+    })
+  })
+
+  res.send(results)
+})
+
 // Edit the customer's address
 // `address` New address value
 router.post('/edit_address', async (req, res) => {

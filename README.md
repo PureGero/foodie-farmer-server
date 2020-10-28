@@ -72,6 +72,10 @@ The body of the request should be a json array of objects with the keys:
 `count` The number of items to order  
 `groupPurchase` True if this item is a group purchase  
 
+### GET /customer/list_orders
+
+List the customer's orders
+
 ### POST /customer/edit_address
 
 Edit the customer's address

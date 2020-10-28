@@ -215,6 +215,7 @@ Driver.hasMany(Route)
 GroupPurchase.belongsTo(Stock)
 GroupPurchase.hasMany(GroupPurchaseOrder)
 GroupPurchaseOrder.belongsTo(Customers)
+GroupPurchaseOrder.belongsTo(GroupPurchase)
 
 sequelize.sync({ alter: true })
 
